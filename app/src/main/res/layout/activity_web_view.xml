@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Top Navigation / Status Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="#212121"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/white"
+            android:contentDescription="Back" />
+
+        <ImageButton
+            android:id="@+id/btnForward"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_media_play"
+            app:tint="@color/white"
+            android:contentDescription="Forward" />
+
+        <ImageButton
+            android:id="@+id/btnReload"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_rotate"
+            app:tint="@color/white"
+            android:contentDescription="Reload" />
+
+        <TextView
+            android:id="@+id/tvCurrentUrl"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="6dp"
+            android:background="#333333"
+            android:ellipsize="middle"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="6dp"
+            android:singleLine="true"
+            android:text="https://..."
+            android:textColor="#EEEEEE"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btnExplain"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:paddingHorizontal="8dp"
+            android:text="危険性の解説"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:visibility="gone" />
+
+    <!-- Web Content Area -->
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#D32F2F" />
+
+    <!-- Intercepted Data Console (Bottom Sheet / Panel) -->
+    <LinearLayout
+        android:id="@+id/panelConsole"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:background="#1E1E2E"
+        android:orientation="vertical">
+
+        <!-- Console Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:background="#2A2A3C"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🚨 アプリ側が傍受したWeb入力値 (盗聴中)"
+                android:textColor="#FF5252"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvInterceptCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="傍受件数: 0"
+                android:textColor="#AAAAAA"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/btnClearConsole"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:minWidth="0dp"
+                android:paddingHorizontal="6dp"
+                android:text="クリア"
+                android:textColor="#FF8A80"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <!-- Latest Interception Highlight Alert Box -->
+        <LinearLayout
+            android:id="@+id/layoutLatestAlert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#3E1F24"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最新の盗聴値:"
+                android:textColor="#FF8A80"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvLatestKey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="[未検出]"
+                android:textColor="#FFCC80"
+                android:textSize="12sp"
+                android:fontFamily="monospace" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" = "
+                android:textColor="#FFFFFF" />
+
+            <TextView
+                android:id="@+id/tvLatestVal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="(Webページ内のフォームに入力してください)"
+                android:textColor="#69F0AE"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:fontFamily="monospace" />
+        </LinearLayout>
+
+        <!-- Log List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvConsoleLogs"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingVertical="4dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

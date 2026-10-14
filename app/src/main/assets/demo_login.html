@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>セキュリティ検証用 疑似ログイン＆決済フォーム</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+      padding: 16px;
+      line-height: 1.5;
+    }
+    .banner {
+      background: #e3f2fd;
+      border: 1px solid #90caf9;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      font-size: 13px;
+    }
+    .banner strong { color: #1565c0; }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-size: 18px;
+      margin-bottom: 14px;
+      color: #1a237e;
+      border-bottom: 2px solid #e8eaf6;
+      padding-bottom: 8px;
+    }
+    .form-group {
+      margin-bottom: 14px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: #424242;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      border: 1.5px solid #ccc;
+      border-radius: 6px;
+      transition: border-color 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #1976d2;
+      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+    }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #1976d2;
+      color: white;
+      font-size: 15px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .btn:active { background-color: #115293; }
+    .btn-secondary {
+      background-color: #78909c;
+      margin-top: 8px;
+    }
+    .status-box {
+      margin-top: 16px;
+      padding: 10px;
+      border-radius: 6px;
+      background: #fafafa;
+      border: 1px dashed #bdbdbd;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="banner">
+    <strong>🧪 セキュリティ検証テスト用Webページ</strong><br>
+    このWebページ内のフォームに文字を入力すると、ブラウジング方式（WebView / 独自実装）によって親Androidアプリに入力値が傍受されるかどうかを実験できます。
+  </div>
+
+  <div class="card">
+    <h2>🔐 疑似会員ログイン</h2>
+    <form id="loginForm" onsubmit="event.preventDefault(); handleSubmit('loginForm');">
+      <div class="form-group">
+        <label for="username">アカウントID / メールアドレス</label>
+        <input type="text" id="username" name="username" placeholder="user@example.com" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label for="password">ログインパスワード</label>
+        <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="off">
+      </div>
+      <button type="submit" class="btn">ログインする (Submit)</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>💳 クレジットカード決済情報入力</h2>
+    <form id="paymentForm" onsubmit="event.preventDefault(); handleSubmit('paymentForm');">
+      <div class="form-group">
+        <label for="card_number">カード番号</label>
+        <input type="text" id="card_number" name="card_number" placeholder="4532 0000 0000 0000" maxlength="19" autocomplete="off">
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <div class="form-group" style="flex: 1;">
+          <label for="card_exp">有効期限</label>
+          <input type="text" id="card_exp" name="card_exp" placeholder="MM/YY" maxlength="5">
+        </div>
+        <div class="form-group" style="flex: 1;">
+          <label for="cvv">セキュリティコード</label>
+          <input type="password" id="cvv" name="cvv" placeholder="123" maxlength="4">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="memo">備考 / 秘密のメモ</label>
+        <textarea id="memo" name="memo" rows="2" placeholder="何か入力してください..."></textarea>
+      </div>
+      <button type="submit" class="btn">決済を実行する (Submit)</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>⚡ 動的DOM検証</h2>
+    <button type="button" class="btn btn-secondary" onclick="addDynamicField()">動的入力フィールドを追加</button>
+    <div id="dynamicContainer" style="margin-top: 12px;"></div>
+  </div>
+
+  <div class="status-box" id="webLogBox">
+    <strong>Web側ログ:</strong> 入力待機中...
+  </div>
+
+  <script>
+    function handleSubmit(formId) {
+      const form = document.getElementById(formId);
+      const data = new FormData(form);
+      const entries = Object.fromEntries(data.entries());
+      document.getElementById('webLogBox').innerHTML = '<strong>Web側 送信完了:</strong> ' + JSON.stringify(entries);
+      alert('【Web側の動作】フォーム送信イベントが発生しました。\n送信データ: ' + JSON.stringify(entries, null, 2));
+    }
+
+    let dynamicCount = 0;
+    function addDynamicField() {
+      dynamicCount++;
+      const container = document.getElementById('dynamicContainer');
+      const div = document.createElement('div');
+      div.className = 'form-group';
+      div.innerHTML = `
+        <label for="dyn_${dynamicCount}">動的追加フィールド #${dynamicCount}</label>
+        <input type="text" id="dyn_${dynamicCount}" name="dynamic_${dynamicCount}" placeholder="動的生成された入力欄 #${dynamicCount}">
+      `;
+      container.appendChild(div);
+    }
+
+    // クッキーを設定（テスト用）
+    document.cookie = "session_token=secret_token_abc12345; path=/; SameSite=Lax";
+    document.cookie = "user_role=admin; path=/; SameSite=Lax";
+  </script>
+</body>
+</html>
