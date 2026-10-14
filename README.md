@@ -1,5 +1,9 @@
 # Browser52 (ブラウザ方式別セキュリティ比較デモアプリ)
 
+<p align="center">
+  <img src="docs/images/icon.jpg" width="120" alt="Browser52 Icon" style="border-radius: 24px;">
+</p>
+
 URLを指定して以下の4つの手段でブラウズし、親アプリ側からWebページ内の入力値や通信内容が傍受可能かどうかを実証・比較するためのAndroidセキュリティ学習・啓発用アプリケーションです。
 
 1. **Chrome Custom Tabs (CCT)**
@@ -94,3 +98,12 @@ JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto ./gradlew assembleDebug
 ```bash
 adb install app/build/outputs/apk/debug/app-debug.apk
 ```
+
+---
+
+## 📸 スクリーンショット
+
+| ブラウズ方式選択画面 | WebView入力傍受デモ | 傍受ログ蓄積履歴 |
+|:---:|:---:|:---:|
+| <img src="docs/images/1.png" width="280" alt="ブラウズ方式選択画面"> | <img src="docs/images/2.png" width="280" alt="WebView入力傍受デモ"> | <img src="docs/images/3.png" width="280" alt="傍受ログ蓄積履歴"> |
+
