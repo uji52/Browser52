@@ -8,7 +8,7 @@ android {
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.browsersecuritydemo"
+        applicationId = "com.uji52.webviewfido"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
@@ -52,6 +52,11 @@ dependencies {
     // Chrome Custom Tabs & Trusted Web Activity
     implementation("androidx.browser:browser:1.8.0")
     implementation("com.google.androidbrowserhelper:androidbrowserhelper:2.5.0")
+
+    // AndroidX Webkit (WebAuthentication / WebAuthn / FIDO2 support in WebView)
+    implementation("androidx.webkit:webkit:1.16.0")
+    implementation("androidx.credentials:credentials:1.3.0")
+    implementation("androidx.credentials:credentials-play-services-auth:1.3.0")
 
     // JSON handling for intercepted DOM events
     implementation("com.google.code.gson:gson:2.10.1")

@@ -63,7 +63,42 @@
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:paddingHorizontal="8dp"
-            android:text="危険性の解説"
+            android:text="解説"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <!-- FIDO / WebAuthn Status Banner -->
+    <LinearLayout
+        android:id="@+id/layoutFidoStatus"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:background="#1B5E20"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp">
+
+        <TextView
+            android:id="@+id/tvFidoStatus"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="🔑 FIDO (WebAuthn): 有効化済 (WEB_AUTHENTICATION_SUPPORT_FOR_APP)"
+            android:textColor="#C8E6C9"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnFidoDetails"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:minWidth="0dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="0dp"
+            android:text="診断 ℹ️"
+            android:textColor="#FFFFFF"
             android:textSize="11sp" />
     </LinearLayout>
 

@@ -16,6 +16,8 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.browsersecuritydemo.adapter.LogAdapter
 import com.example.browsersecuritydemo.data.SecurityLogRepository
@@ -179,6 +181,14 @@ class CustomBrowserActivity : AppCompatActivity() {
             allowFileAccess = true
             allowContentAccess = true
             cacheMode = WebSettings.LOAD_DEFAULT
+        }
+
+        // FIDO / WebAuthn (Passkeys) サポートの有効化 (ブラウザモード)
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.WEB_AUTHENTICATION)) {
+            WebSettingsCompat.setWebAuthenticationSupport(
+                binding.customWebView.settings,
+                WebSettingsCompat.WEB_AUTHENTICATION_SUPPORT_FOR_BROWSER
+            )
         }
 
         val bridge = InputInterceptorBridge(source = "CustomBrowser")

@@ -55,6 +55,14 @@ Androidアプリ内でWebコンテンツを表示する際、どの技術を採�
   - **HTML改ざんデモ（トグル機能）**: 親アプリ側でWebページのHTML構造を動的に書き換え、偽のフィッシング警告バナーや偽装UIを挿入する攻撃（中間者攻撃に類似した挙動）を実演可能。
   - **入力値の完全傍受**: 入力されたキーストロークやフォームデータをリアルタイム記録。
 
+### 5. WebViewでのFIDO (WebAuthn / パスキー) 対応
+- **設定内容**:
+  - `androidx.webkit:webkit:1.16.0` の `WebSettingsCompat.setWebAuthenticationSupport` (`WEB_AUTHENTICATION_SUPPORT_FOR_APP`) を有効化。
+  - アプリ側 `AndroidManifest.xml` および `strings.xml` に `asset_statements` を宣言（`https://www.uji52.com/.well-known/assetlinks.json`）。
+  - パッケージ名: `com.uji52.webviewfido`
+  - デバッグ署名 SHA-256 フィンガープリント: `0C:BA:1F:D1:69:A1:8B:A0:E5:D1:6A:62:40:DA:E1:A3:4D:4E:49:55:E7:33:78:82:3B:D7:B5:23:07:B9:FC:3D`
+- **動作**:
+  - Webサイト側の `assetlinks.json` に上記パッケージ名とSHA-256が登録されていれば、WebView内で `navigator.credentials.create()` / `get()` を呼び出した際に、Android OSのCredential Manager（パスキー/生体認証）が起動して安全にFIDO認証が完了します。
 ---
 
 ## 🧪 内蔵検証テストページ (`demo_login.html`)
